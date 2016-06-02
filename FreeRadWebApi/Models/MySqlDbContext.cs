@@ -1,4 +1,5 @@
-﻿using MySql.Data.Entity;
+﻿using Microsoft.Practices.Unity;
+using MySql.Data.Entity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,7 +14,7 @@ namespace FreeRadWebApi.Models
     [DbConfigurationType(typeof(MySqlEFConfiguration))]
     public class MySqlDbContext : DbContext
     {
-        //[InjectionConstructor]
+        [InjectionConstructor]
         public MySqlDbContext()
             : base("MySqlServer")
         {

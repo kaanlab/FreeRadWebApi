@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace FreeRadWebApi.Models
@@ -37,6 +38,11 @@ namespace FreeRadWebApi.Models
             return _context.Users.Find(userId);
         }
 
+        public Task<User> FindUserAsync(int? userId)
+        {
+            return _context.Users.FindAsync(userId);
+        }
+
         public void EditUser(User user)
         {
             var mySqlParams = new MySqlParameter[]
@@ -53,11 +59,20 @@ namespace FreeRadWebApi.Models
                 .ExecuteSqlCommand("UPDATE radius.radcheck SET username = @username, attribute = @attribute, op = @op, value = @value WHERE id = @id", mySqlParams);
         }
 
-        public void DeleteUser(int userId)
+        public void DeleteUser(User user)
         {
+            var mySqlParams = new MySqlParameter[]
+                {
+                    new MySqlParameter("@id", user.Id),
+                    new MySqlParameter("@username", user.UserName),
+                    new MySqlParameter("@attribute", user.Attribute),
+                    new MySqlParameter("@op", user.Op),
+                    new MySqlParameter("@value", user.Value),
+                };
+
             _context
                 .Database
-                .ExecuteSqlCommand("DELETE FROM radius.radcheck WHERE id = @id", new MySqlParameter("@id", userId));
+                .ExecuteSqlCommand("DELETE FROM radius.radcheck WHERE id = @id AND username = @username AND attribute = @attribute AND op = @op AND value = @value", mySqlParams);
         }
 
         #endregion
@@ -124,6 +139,11 @@ namespace FreeRadWebApi.Models
             return _context.Groups.Find(groupId);
         }
 
+        public Task<Group> FindGroupAsync(int? groupId)
+        {
+            return _context.Groups.FindAsync(groupId);
+        }
+
         public void EditGroup(Group group)
         {
             var mySqlParams = new MySqlParameter[]
@@ -140,11 +160,20 @@ namespace FreeRadWebApi.Models
                 .ExecuteSqlCommand("UPDATE radius.radgroupcheck SET groupname = @groupname, attribute = @attribute, op = @op, value = @value WHERE id = @id", mySqlParams);
         }
 
-        public void DeleteGroup(int groupId)
+        public void DeleteGroup(Group group)
         {
+            var mySqlParams = new MySqlParameter[]
+                    {
+                        new MySqlParameter("@id", group.Id),
+                        new MySqlParameter("@groupname", group.GroupName),
+                        new MySqlParameter("@attribute", group.Attribute),
+                        new MySqlParameter("@op", group.Op),
+                        new MySqlParameter("@value", group.Value),
+                    };
+
             _context
                .Database
-               .ExecuteSqlCommand("DELETE FROM radius.radgroupcheck WHERE id = @id", new MySqlParameter("@id", groupId));
+               .ExecuteSqlCommand("DELETE FROM radius.radgroupcheck WHERE id = @id AND groupname = @groupname AND attribute = @attribute AND op = @op AND value = @value", mySqlParams);
         }
 
         #endregion
@@ -325,9 +354,9 @@ namespace FreeRadWebApi.Models
 
         #endregion
 
-        public void SaveAll()
+        public async Task SaveAsync()
         {
-            _context.SaveChanges();
+           await _context.SaveChangesAsync();
         }
 
         public void Dispose()

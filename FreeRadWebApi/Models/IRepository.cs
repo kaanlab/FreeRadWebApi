@@ -11,8 +11,9 @@ namespace FreeRadWebApi.Models
         IEnumerable<User> GetAllUsers();
         void AddUser(User newUser);
         User FindUser(int? userId);
+        Task<User> FindUserAsync(int? userId);
         void EditUser(User user);
-        void DeleteUser(int userId);
+        void DeleteUser(User user);
 
         IEnumerable<UserAttribute> GetAllUserAttributes();
         void AddUserAttr(UserAttribute newUserAttr);
@@ -23,8 +24,9 @@ namespace FreeRadWebApi.Models
         IEnumerable<Group> GetAllGroups();
         void AddGroup(Group newGroup);
         Group FindGroup(int? groupId);
+        Task<Group> FindGroupAsync(int? groupId);
         void EditGroup(Group group);
-        void DeleteGroup(int groupId);
+        void DeleteGroup(Group group);
 
         IEnumerable<GroupAttribute> GetAllGroupAttributes();
         void AddGroupAttr(GroupAttribute newGroupAttr);
@@ -52,6 +54,6 @@ namespace FreeRadWebApi.Models
         AuthLog FindAuthLog(int? logId);
         void DeleteAuthLog(int logId);
 
-        void SaveAll();
+        Task SaveAsync();
     }
 }
