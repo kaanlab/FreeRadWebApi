@@ -10,7 +10,7 @@ namespace FreeRadWebApi.Models
     public class Repository : IRepository
     {
         private bool disposed;
-        private MySqlDbContext _context;
+        private readonly MySqlDbContext _context;
 
         public Repository(MySqlDbContext context)
         {
@@ -51,7 +51,7 @@ namespace FreeRadWebApi.Models
                     new MySqlParameter("@username", user.UserName),
                     new MySqlParameter("@attribute", user.Attribute),
                     new MySqlParameter("@op", user.Op),
-                    new MySqlParameter("@value", user.Value),
+                    new MySqlParameter("@value", user.Value)
                 };
 
             _context
@@ -67,12 +67,12 @@ namespace FreeRadWebApi.Models
                     new MySqlParameter("@username", user.UserName),
                     new MySqlParameter("@attribute", user.Attribute),
                     new MySqlParameter("@op", user.Op),
-                    new MySqlParameter("@value", user.Value),
+                    new MySqlParameter("@value", user.Value)
                 };
 
             _context
                 .Database
-                .ExecuteSqlCommand("DELETE FROM radius.radcheck WHERE id = @id AND username = @username AND attribute = @attribute AND op = @op AND value = @value", mySqlParams);
+                .ExecuteSqlCommand("DELETE FROM radius.radcheck WHERE id = @id", mySqlParams);
         }
 
         #endregion
@@ -95,6 +95,11 @@ namespace FreeRadWebApi.Models
             return _context.UserAttributes.Find(userAttrId);
         }
 
+        public Task<UserAttribute> FindUserAttrAsync(int? userAttrId)
+        {
+            return _context.UserAttributes.FindAsync(userAttrId);
+        }
+
         public void EditUserAttr(UserAttribute userAttr)
         {
             var mySqlParams = new MySqlParameter[]
@@ -103,7 +108,7 @@ namespace FreeRadWebApi.Models
                     new MySqlParameter("@username", userAttr.UserName),
                     new MySqlParameter("@attribute", userAttr.Attribute),
                     new MySqlParameter("@op", userAttr.Op),
-                    new MySqlParameter("@value", userAttr.Value),
+                    new MySqlParameter("@value", userAttr.Value)
                 };
 
             _context
@@ -111,11 +116,20 @@ namespace FreeRadWebApi.Models
                 .ExecuteSqlCommand("UPDATE radius.radreply SET username = @username, attribute = @attribute, op = @op, value = @value WHERE id = @id", mySqlParams);
         }
 
-        public void DeleteUserAttr(int userAttrId)
+        public void DeleteUserAttr(UserAttribute userAttr)
         {
+            var mySqlParams = new MySqlParameter[]
+                {
+                    new MySqlParameter("@id", userAttr.Id),
+                    new MySqlParameter("@username", userAttr.UserName),
+                    new MySqlParameter("@attribute", userAttr.Attribute),
+                    new MySqlParameter("@op", userAttr.Op),
+                    new MySqlParameter("@value", userAttr.Value)
+                };
+
             _context
                .Database
-               .ExecuteSqlCommand("DELETE FROM radius.radreply WHERE id = @id", new MySqlParameter("@id", userAttrId));
+               .ExecuteSqlCommand("DELETE FROM radius.radreply WHERE id = @id AND username = @username AND attribute = @attribute AND op = @op AND value = @value", mySqlParams);
         }
 
         #endregion
@@ -152,7 +166,7 @@ namespace FreeRadWebApi.Models
                         new MySqlParameter("@groupname", group.GroupName),
                         new MySqlParameter("@attribute", group.Attribute),
                         new MySqlParameter("@op", group.Op),
-                        new MySqlParameter("@value", group.Value),
+                        new MySqlParameter("@value", group.Value)
                     };
 
             _context
@@ -168,7 +182,7 @@ namespace FreeRadWebApi.Models
                         new MySqlParameter("@groupname", group.GroupName),
                         new MySqlParameter("@attribute", group.Attribute),
                         new MySqlParameter("@op", group.Op),
-                        new MySqlParameter("@value", group.Value),
+                        new MySqlParameter("@value", group.Value)
                     };
 
             _context
@@ -195,6 +209,11 @@ namespace FreeRadWebApi.Models
             return _context.GroupAttributes.Find(groupAttrId);
         }
 
+        public Task<GroupAttribute> FindGroupAttrAsync(int? groupAttrId)
+        {
+            return _context.GroupAttributes.FindAsync(groupAttrId);
+        }
+
         public void EditGroupAttr(GroupAttribute groupAttr)
         {
             var mySqlParams = new MySqlParameter[]
@@ -203,7 +222,7 @@ namespace FreeRadWebApi.Models
                     new MySqlParameter("@groupname", groupAttr.GroupName),
                     new MySqlParameter("@attribute", groupAttr.Attribute),
                     new MySqlParameter("@op", groupAttr.Op),
-                    new MySqlParameter("@value", groupAttr.Value),
+                    new MySqlParameter("@value", groupAttr.Value)
                 };
 
             _context
@@ -211,33 +230,47 @@ namespace FreeRadWebApi.Models
                 .ExecuteSqlCommand("UPDATE radius.radgroupreply SET groupname = @groupname, attribute = @attribute, op = @op, value = @value WHERE id = @id", mySqlParams);
         }
 
-        public void DeleteGroupAttr(int groupAttrId)
+        public void DeleteGroupAttr(GroupAttribute groupAttr)
         {
+            var mySqlParams = new MySqlParameter[]
+                {
+                    new MySqlParameter("@id", groupAttr.Id),
+                    new MySqlParameter("@groupname", groupAttr.GroupName),
+                    new MySqlParameter("@attribute", groupAttr.Attribute),
+                    new MySqlParameter("@op", groupAttr.Op),
+                    new MySqlParameter("@value", groupAttr.Value)
+                };
+
             _context
                 .Database
-                .ExecuteSqlCommand("DELETE FROM radius.radgroupreply WHERE id = @id", new MySqlParameter("@id", groupAttrId));
+                .ExecuteSqlCommand("DELETE FROM radius.radgroupreply WHERE id = @id AND groupname = @groupname AND attribute = @attribute AND op = @op AND value = @value", mySqlParams);
         }
 
         #endregion
 
 
-        #region UserGroup
+        #region UserInGroup
 
         public IEnumerable<UserInGroup> GetAllUsersInGroup()
         {
 
 
-            return _context.UserGroups.ToList();
+            return _context.UserInGroups.ToList();
         }
 
         public void AddUserToGroup(UserInGroup newUser)
         {
-            _context.UserGroups.Add(newUser);
+            _context.UserInGroups.Add(newUser);
         }
 
         public UserInGroup FindUserInGroup(int? userId)
         {
-            return _context.UserGroups.Find(userId);
+            return _context.UserInGroups.Find(userId);
+        }
+
+        public Task<UserInGroup> FindUserInGroupAsync(int? userId)
+        {
+            return _context.UserInGroups.FindAsync(userId);
         }
 
         public void EditUserInGroup(UserInGroup user)
@@ -255,11 +288,19 @@ namespace FreeRadWebApi.Models
                 .ExecuteSqlCommand("UPDATE radius.radusergroup SET username = @username, groupname = @groupname, priority = @priority WHERE id = @id", mySqlParams);
         }
 
-        public void DeleteUserFromGroup(int userId)
+        public void DeleteUserFromGroup(UserInGroup user)
         {
+            var mySqlParams = new MySqlParameter[]
+                {
+                    new MySqlParameter("@id", user.Id),
+                    new MySqlParameter("@username", user.UserName),
+                    new MySqlParameter("@groupname", user.GroupName),
+                    new MySqlParameter("@priority", user.Priority)
+                };
+
             _context
                 .Database
-                .ExecuteSqlCommand("DELETE FROM radius.radusergroup WHERE id = @id", new MySqlParameter("@id", userId));
+                .ExecuteSqlCommand("DELETE FROM radius.radusergroup WHERE id = @id AND username = @username AND groupname = @groupname AND priority = @priority", mySqlParams);
         }
 
         #endregion

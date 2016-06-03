@@ -18,8 +18,9 @@ namespace FreeRadWebApi.Models
         IEnumerable<UserAttribute> GetAllUserAttributes();
         void AddUserAttr(UserAttribute newUserAttr);
         UserAttribute FindUserAttr(int? userAttrId);
+        Task<UserAttribute> FindUserAttrAsync(int? userAttrId);
         void EditUserAttr(UserAttribute userAttr);
-        void DeleteUserAttr(int userAttrId);
+        void DeleteUserAttr(UserAttribute userAttr);
 
         IEnumerable<Group> GetAllGroups();
         void AddGroup(Group newGroup);
@@ -31,14 +32,16 @@ namespace FreeRadWebApi.Models
         IEnumerable<GroupAttribute> GetAllGroupAttributes();
         void AddGroupAttr(GroupAttribute newGroupAttr);
         GroupAttribute FindGroupAttr(int? groupAttrId);
+        Task<GroupAttribute> FindGroupAttrAsync(int? groupAttrId);
         void EditGroupAttr(GroupAttribute groupAttr);
-        void DeleteGroupAttr(int groupAttrId);
+        void DeleteGroupAttr(GroupAttribute groupAttr);
 
         IEnumerable<UserInGroup> GetAllUsersInGroup();
         void AddUserToGroup(UserInGroup newUser);
         UserInGroup FindUserInGroup(int? userId);
+        Task<UserInGroup> FindUserInGroupAsync(int? userId);
         void EditUserInGroup(UserInGroup user);
-        void DeleteUserFromGroup(int userId);
+        void DeleteUserFromGroup(UserInGroup user);
 
         IEnumerable<Nas> GetAllNas();
         void AddNas(Nas newNas);

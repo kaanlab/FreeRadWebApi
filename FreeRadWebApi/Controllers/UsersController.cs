@@ -15,10 +15,10 @@ namespace FreeRadWebApi.Controllers
     public class UsersController : ApiController
     {
         private readonly IRepository _repository;
-
+       
         public UsersController(IRepository repository)
         {
-            _repository = repository;            
+            _repository = repository;                        
         }
 
         [HttpGet]
@@ -31,17 +31,23 @@ namespace FreeRadWebApi.Controllers
         public async Task<IHttpActionResult> GetUser(int id)
         {
             User user = await _repository.FindUserAsync(id);
+
             if (user == null)
             {
-                return NotFound();
+                var message = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent($"Не могу найти пользователя с Id:{id}!")
+                };
+                
+                throw new HttpResponseException(message);
             }
-
+                        
             return Ok(user);
         }
 
         // POST: api/Users
         [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> PostUser(User user)
+        public async Task<IHttpActionResult> PostUser([FromBody] User user)
         {
             if (!ModelState.IsValid)
             {
@@ -56,7 +62,7 @@ namespace FreeRadWebApi.Controllers
 
         // PUT: api/Users/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutUser(int id, User user)
+        public async Task<IHttpActionResult> PutUser(int id, [FromBody] User user)
         {
             if (!ModelState.IsValid)
             {
@@ -65,12 +71,22 @@ namespace FreeRadWebApi.Controllers
 
             if (id != user.Id)
             {
-                return BadRequest();
+                var message = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent($"Не могу найти пользователя с Id:{id}!")
+                };
+
+                throw new HttpResponseException(message);
             }
 
             if (!UserExists(id))
             {
-                return NotFound();
+                var message = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent($"Не могу найти пользователя с Id:{id}!")
+                };
+                //return NotFound();
+                throw new HttpResponseException(message);
             }
 
             try
@@ -89,12 +105,27 @@ namespace FreeRadWebApi.Controllers
 
         // DELETE: api/Users/5
         [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> DeleteUser(int id)
+        public async Task<IHttpActionResult> DeleteUser(int id, [FromBody] User deleteUser)
         {
             User user = _repository.FindUser(id);
             if (user == null)
             {
-                return NotFound();
+                var message = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent($"Не могу найти пользователя с Id:{id}!")
+                };
+                
+                throw new HttpResponseException(message);
+            }
+
+            if (user.UserName != deleteUser.UserName || user.Value != deleteUser.Value)
+            {
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent($"Не могу удалить пользователя. Поля не совпадают!")
+                };
+                
+                throw new HttpResponseException(message);                
             }
 
             try
@@ -102,9 +133,14 @@ namespace FreeRadWebApi.Controllers
                 _repository.DeleteUser(user); 
                 await _repository.SaveAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(HttpStatusCode.BadRequest);
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent(ex.ToString())
+                };
+                
+                throw new HttpResponseException(message);
             }
             
             return Ok(user);

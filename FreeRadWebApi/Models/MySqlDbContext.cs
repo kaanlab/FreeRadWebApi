@@ -33,7 +33,7 @@ namespace FreeRadWebApi.Models
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupAttribute> GroupAttributes { get; set; }
 
-        public DbSet<UserInGroup> UserGroups { get; set; }
+        public DbSet<UserInGroup> UserInGroups { get; set; }
         public DbSet<Nas> Nases { get; set; }
 
         public DbSet<AccessLog> AccessLogs { get; set; }

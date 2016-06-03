@@ -10,68 +10,68 @@ using System.Web.Http.Description;
 
 namespace FreeRadWebApi.Controllers
 {
-    public class GroupsController : ApiController
+    public class GroupAttributesController : ApiController
     {
         private readonly IRepository _repository;
 
-        public GroupsController(IRepository repository)
+        public GroupAttributesController(IRepository repository)
         {
             _repository = repository;
         }
 
         [HttpGet]
-        public IEnumerable<Group> Get()
+        public IEnumerable<GroupAttribute> Get()
         {
-            return _repository.GetAllGroups();
+            return _repository.GetAllGroupAttributes();
         }
 
-        [ResponseType(typeof(Group))]
-        public async Task<IHttpActionResult> GetGroup(int id)
+        [ResponseType(typeof(GroupAttribute))]
+        public async Task<IHttpActionResult> GetGroupAttr(int id)
         {
-            Group group = await _repository.FindGroupAsync(id);
-            if (group == null)
+            GroupAttribute groupAttr = await _repository.FindGroupAttrAsync(id);
+            if (groupAttr == null)
             {
                 return NotFound();
             }
 
-            return Ok(group);
+            return Ok(groupAttr);
         }
 
-        [ResponseType(typeof(Group))]
-        public async Task<IHttpActionResult> PostGroup(Group group)
+        [ResponseType(typeof(GroupAttribute))]
+        public async Task<IHttpActionResult> PostGroupAttr(GroupAttribute groupAttr)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _repository.AddGroup(group);
+            _repository.AddGroupAttr(groupAttr);
             await _repository.SaveAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = group.Id }, group);
+            return CreatedAtRoute("DefaultApi", new { id = groupAttr.Id }, groupAttr);
         }
 
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutGroup(int id, Group group)
+        public async Task<IHttpActionResult> PutGroupAttr(int id, GroupAttribute groupAttr)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != group.Id)
+            if (id != groupAttr.Id)
             {
                 return BadRequest();
             }
 
-            if (!GroupExists(id))
+            if (!GroupAttrExists(id))
             {
                 return NotFound();
             }
 
             try
             {
-                _repository.EditGroup(group);
+                _repository.EditGroupAttr(groupAttr);
 
                 await _repository.SaveAsync();
             }
@@ -83,18 +83,18 @@ namespace FreeRadWebApi.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        [ResponseType(typeof(Group))]
-        public async Task<IHttpActionResult> DeleteGroup(int id)
+        [ResponseType(typeof(GroupAttribute))]
+        public async Task<IHttpActionResult> DeleteGroupAttr(int id)
         {
-            Group group = _repository.FindGroup(id);
-            if (group == null)
+            GroupAttribute groupAttr = _repository.FindGroupAttr(id);
+            if (groupAttr == null)
             {
                 return NotFound();
             }
 
             try
             {
-                _repository.DeleteGroup(group);
+                _repository.DeleteGroupAttr(groupAttr);
                 await _repository.SaveAsync();
             }
             catch (Exception)
@@ -102,7 +102,7 @@ namespace FreeRadWebApi.Controllers
                 return StatusCode(HttpStatusCode.BadRequest);
             }
 
-            return Ok(group);
+            return Ok(groupAttr);
         }
 
         protected override void Dispose(bool disposing)
@@ -114,9 +114,9 @@ namespace FreeRadWebApi.Controllers
             base.Dispose(disposing);
         }
 
-        private bool GroupExists(int id)
+        private bool GroupAttrExists(int id)
         {
-            return _repository.GetAllGroups().Count(g => g.Id == id) > 0;
+            return _repository.GetAllGroupAttributes().Count(g => g.Id == id) > 0;
         }
     }
 }
