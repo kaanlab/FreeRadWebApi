@@ -1,13 +1,9 @@
 ﻿using Microsoft.Practices.Unity;
 using MySql.Data.Entity;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure.Annotations;
-using System.Linq;
-using System.Web;
 
 namespace FreeRadWebApi.Models
 {

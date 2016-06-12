@@ -1,4 +1,3 @@
-
 using FreeRadWebApi.Models;
 using Microsoft.Practices.Unity;
 using System.Web.Http;

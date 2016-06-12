@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace FreeRadWebApi.Models
 {
@@ -22,38 +21,21 @@ namespace FreeRadWebApi.Models
 
         #region User
 
-        public IEnumerable<User> GetAllUsers()
-        {
-            return _context.Users.ToList();
-
-        }
+        public IEnumerable<User> GetAllUsers() => _context.Users.ToList();
 
         public void AddUser(User newUser)
         {
             _context.Users.Add(newUser);
         }
 
-        public User FindUser(int? userId)
-        {
-            return _context.Users.Find(userId);
-        }
+        public User FindUser(int? userId) => _context.Users.Find(userId);
 
-        public Task<User> FindUserAsync(int? userId)
-        {
-            return _context.Users.FindAsync(userId);
-        }
+        public Task<User> FindUserAsync(int? userId) => _context.Users.FindAsync(userId);
 
         public void EditUser(User user)
         {
-            var mySqlParams = new MySqlParameter[]
-                {
-                    new MySqlParameter("@id", user.Id),
-                    new MySqlParameter("@username", user.UserName),
-                    new MySqlParameter("@attribute", user.Attribute),
-                    new MySqlParameter("@op", user.Op),
-                    new MySqlParameter("@value", user.Value)
-                };
-
+            var mySqlParams = new MySqlParameter("@id", user.Id);
+            
             _context
                 .Database
                 .ExecuteSqlCommand("UPDATE radius.radcheck SET username = @username, attribute = @attribute, op = @op, value = @value WHERE id = @id", mySqlParams);
@@ -61,14 +43,7 @@ namespace FreeRadWebApi.Models
 
         public void DeleteUser(User user)
         {
-            var mySqlParams = new MySqlParameter[]
-                {
-                    new MySqlParameter("@id", user.Id),
-                    new MySqlParameter("@username", user.UserName),
-                    new MySqlParameter("@attribute", user.Attribute),
-                    new MySqlParameter("@op", user.Op),
-                    new MySqlParameter("@value", user.Value)
-                };
+            var mySqlParams = new MySqlParameter("@id", user.Id);
 
             _context
                 .Database
@@ -80,25 +55,16 @@ namespace FreeRadWebApi.Models
 
         #region UserAttr
 
-        public IEnumerable<UserAttribute> GetAllUserAttributes()
-        {
-            return _context.UserAttributes.ToList();
-        }
+        public IEnumerable<UserAttribute> GetAllUserAttributes() => _context.UserAttributes.ToList();
 
         public void AddUserAttr(UserAttribute newUserAttr)
         {
             _context.UserAttributes.Add(newUserAttr);
         }
 
-        public UserAttribute FindUserAttr(int? userAttrId)
-        {
-            return _context.UserAttributes.Find(userAttrId);
-        }
+        public UserAttribute FindUserAttr(int? userAttrId) => _context.UserAttributes.Find(userAttrId);
 
-        public Task<UserAttribute> FindUserAttrAsync(int? userAttrId)
-        {
-            return _context.UserAttributes.FindAsync(userAttrId);
-        }
+        public Task<UserAttribute> FindUserAttrAsync(int? userAttrId) => _context.UserAttributes.FindAsync(userAttrId);
 
         public void EditUserAttr(UserAttribute userAttr)
         {
@@ -118,14 +84,7 @@ namespace FreeRadWebApi.Models
 
         public void DeleteUserAttr(UserAttribute userAttr)
         {
-            var mySqlParams = new MySqlParameter[]
-                {
-                    new MySqlParameter("@id", userAttr.Id),
-                    new MySqlParameter("@username", userAttr.UserName),
-                    new MySqlParameter("@attribute", userAttr.Attribute),
-                    new MySqlParameter("@op", userAttr.Op),
-                    new MySqlParameter("@value", userAttr.Value)
-                };
+            var mySqlParams = new MySqlParameter("@id", userAttr.Id);
 
             _context
                .Database
@@ -137,26 +96,16 @@ namespace FreeRadWebApi.Models
 
         #region Group
 
-        public IEnumerable<Group> GetAllGroups()
-        {
-            return _context.Groups.ToList();
-
-        }
+        public IEnumerable<Group> GetAllGroups() => _context.Groups.ToList();
 
         public void AddGroup(Group newGroup)
         {
             _context.Groups.Add(newGroup);
         }
 
-        public Group FindGroup(int? groupId)
-        {
-            return _context.Groups.Find(groupId);
-        }
+        public Group FindGroup(int? groupId) => _context.Groups.Find(groupId);
 
-        public Task<Group> FindGroupAsync(int? groupId)
-        {
-            return _context.Groups.FindAsync(groupId);
-        }
+        public Task<Group> FindGroupAsync(int? groupId) => _context.Groups.FindAsync(groupId);
 
         public void EditGroup(Group group)
         {
@@ -176,14 +125,7 @@ namespace FreeRadWebApi.Models
 
         public void DeleteGroup(Group group)
         {
-            var mySqlParams = new MySqlParameter[]
-                    {
-                        new MySqlParameter("@id", group.Id),
-                        new MySqlParameter("@groupname", group.GroupName),
-                        new MySqlParameter("@attribute", group.Attribute),
-                        new MySqlParameter("@op", group.Op),
-                        new MySqlParameter("@value", group.Value)
-                    };
+            var mySqlParams = new MySqlParameter("@id", group.Id);
 
             _context
                .Database
@@ -195,24 +137,16 @@ namespace FreeRadWebApi.Models
 
         #region GroupAttr
 
-        public IEnumerable<GroupAttribute> GetAllGroupAttributes()
-        {
-            return _context.GroupAttributes.ToList();
-        }
+        public IEnumerable<GroupAttribute> GetAllGroupAttributes() => _context.GroupAttributes.ToList();
+
         public void AddGroupAttr(GroupAttribute newGroupAttr)
         {
             _context.GroupAttributes.Add(newGroupAttr);
         }
 
-        public GroupAttribute FindGroupAttr(int? groupAttrId)
-        {
-            return _context.GroupAttributes.Find(groupAttrId);
-        }
+        public GroupAttribute FindGroupAttr(int? groupAttrId) => _context.GroupAttributes.Find(groupAttrId);
 
-        public Task<GroupAttribute> FindGroupAttrAsync(int? groupAttrId)
-        {
-            return _context.GroupAttributes.FindAsync(groupAttrId);
-        }
+        public Task<GroupAttribute> FindGroupAttrAsync(int? groupAttrId) => _context.GroupAttributes.FindAsync(groupAttrId);
 
         public void EditGroupAttr(GroupAttribute groupAttr)
         {
@@ -232,14 +166,7 @@ namespace FreeRadWebApi.Models
 
         public void DeleteGroupAttr(GroupAttribute groupAttr)
         {
-            var mySqlParams = new MySqlParameter[]
-                {
-                    new MySqlParameter("@id", groupAttr.Id),
-                    new MySqlParameter("@groupname", groupAttr.GroupName),
-                    new MySqlParameter("@attribute", groupAttr.Attribute),
-                    new MySqlParameter("@op", groupAttr.Op),
-                    new MySqlParameter("@value", groupAttr.Value)
-                };
+            var mySqlParams = new MySqlParameter("@id", groupAttr.Id);
 
             _context
                 .Database
@@ -251,27 +178,18 @@ namespace FreeRadWebApi.Models
 
         #region UserInGroup
 
-        public IEnumerable<UserInGroup> GetAllUsersInGroup()
-        {
 
 
-            return _context.UserInGroups.ToList();
-        }
+        public IEnumerable<UserInGroup> GetAllUsersInGroup() => _context.UserInGroups.ToList();
 
         public void AddUserToGroup(UserInGroup newUser)
         {
             _context.UserInGroups.Add(newUser);
         }
 
-        public UserInGroup FindUserInGroup(int? userId)
-        {
-            return _context.UserInGroups.Find(userId);
-        }
+        public UserInGroup FindUserInGroup(int? userId) => _context.UserInGroups.Find(userId);
 
-        public Task<UserInGroup> FindUserInGroupAsync(int? userId)
-        {
-            return _context.UserInGroups.FindAsync(userId);
-        }
+        public Task<UserInGroup> FindUserInGroupAsync(int? userId) => _context.UserInGroups.FindAsync(userId);
 
         public void EditUserInGroup(UserInGroup user)
         {
@@ -290,13 +208,7 @@ namespace FreeRadWebApi.Models
 
         public void DeleteUserFromGroup(UserInGroup user)
         {
-            var mySqlParams = new MySqlParameter[]
-                {
-                    new MySqlParameter("@id", user.Id),
-                    new MySqlParameter("@username", user.UserName),
-                    new MySqlParameter("@groupname", user.GroupName),
-                    new MySqlParameter("@priority", user.Priority)
-                };
+            var mySqlParams = new MySqlParameter("@id", user.Id);
 
             _context
                 .Database
@@ -308,20 +220,14 @@ namespace FreeRadWebApi.Models
 
         #region Nas
 
-        public IEnumerable<Nas> GetAllNas()
-        {
-            return _context.Nases.ToList();
-        }
+        public IEnumerable<Nas> GetAllNas() => _context.Nases.ToList();
 
         public void AddNas(Nas newNas)
         {
             _context.Nases.Add(newNas);
         }
 
-        public Nas FindNas(int? nasId)
-        {
-            return _context.Nases.Find(nasId);
-        }
+        public Nas FindNas(int? nasId) => _context.Nases.Find(nasId);
 
         public void EditNas(Nas nas)
         {
@@ -354,15 +260,9 @@ namespace FreeRadWebApi.Models
 
         #region AccessLog
 
-        public IEnumerable<AccessLog> GetAllLogsOderByIdDes()
-        {
-            return _context.AccessLogs.OrderByDescending(o => o.RadAcctId);
-        }
+        public IEnumerable<AccessLog> GetAllLogsOderByIdDes() => _context.AccessLogs.OrderByDescending(o => o.RadAcctId);
 
-        public AccessLog FindLog(int? logId)
-        {
-            return _context.AccessLogs.Find(logId);
-        }
+        public AccessLog FindLog(int? logId) => _context.AccessLogs.Find(logId);
 
         public void DeleteLog(int logId)
         {
@@ -376,15 +276,9 @@ namespace FreeRadWebApi.Models
 
         #region AuthLog
 
-        public IEnumerable<AuthLog> GetAllAuthLogsOderByIdDes()
-        {
-            return _context.AuthLogs.OrderByDescending(o => o.Id);
-        }
+        public IEnumerable<AuthLog> GetAllAuthLogsOderByIdDes() => _context.AuthLogs.OrderByDescending(o => o.Id);
 
-        public AuthLog FindAuthLog(int? logId)
-        {
-            return _context.AuthLogs.Find(logId);
-        }
+        public AuthLog FindAuthLog(int? logId) => _context.AuthLogs.Find(logId);
 
         public void DeleteAuthLog(int logId)
         {

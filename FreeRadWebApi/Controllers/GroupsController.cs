@@ -19,11 +19,7 @@ namespace FreeRadWebApi.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
-        public IEnumerable<Group> Get()
-        {
-            return _repository.GetAllGroups();
-        }
+        public IEnumerable<Group> Get() => _repository.GetAllGroups();
 
         [ResponseType(typeof(Group))]
         public async Task<IHttpActionResult> GetGroup(int id)
@@ -114,9 +110,6 @@ namespace FreeRadWebApi.Controllers
             base.Dispose(disposing);
         }
 
-        private bool GroupExists(int id)
-        {
-            return _repository.GetAllGroups().Count(g => g.Id == id) > 0;
-        }
+        private bool GroupExists(int id) => _repository.GetAllGroups().Count(g => g.Id == id) > 0;
     }
 }
