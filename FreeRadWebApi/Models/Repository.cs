@@ -34,8 +34,15 @@ namespace FreeRadWebApi.Models
 
         public void EditUser(User user)
         {
-            var mySqlParams = new MySqlParameter("@id", user.Id);
-            
+            var mySqlParams = new MySqlParameter[]
+               {
+                    new MySqlParameter("@id", user.Id),
+                    new MySqlParameter("@username", user.UserName),
+                    new MySqlParameter("@attribute", user.Attribute),
+                    new MySqlParameter("@op", user.Op),
+                    new MySqlParameter("@value", user.Value)
+               };
+
             _context
                 .Database
                 .ExecuteSqlCommand("UPDATE radius.radcheck SET username = @username, attribute = @attribute, op = @op, value = @value WHERE id = @id", mySqlParams);
@@ -88,7 +95,7 @@ namespace FreeRadWebApi.Models
 
             _context
                .Database
-               .ExecuteSqlCommand("DELETE FROM radius.radreply WHERE id = @id AND username = @username AND attribute = @attribute AND op = @op AND value = @value", mySqlParams);
+               .ExecuteSqlCommand("DELETE FROM radius.radreply WHERE id = @id", mySqlParams);
         }
 
         #endregion
@@ -129,7 +136,7 @@ namespace FreeRadWebApi.Models
 
             _context
                .Database
-               .ExecuteSqlCommand("DELETE FROM radius.radgroupcheck WHERE id = @id AND groupname = @groupname AND attribute = @attribute AND op = @op AND value = @value", mySqlParams);
+               .ExecuteSqlCommand("DELETE FROM radius.radgroupcheck WHERE id = @id", mySqlParams);
         }
 
         #endregion
@@ -170,7 +177,7 @@ namespace FreeRadWebApi.Models
 
             _context
                 .Database
-                .ExecuteSqlCommand("DELETE FROM radius.radgroupreply WHERE id = @id AND groupname = @groupname AND attribute = @attribute AND op = @op AND value = @value", mySqlParams);
+                .ExecuteSqlCommand("DELETE FROM radius.radgroupreply WHERE id = @id", mySqlParams);
         }
 
         #endregion

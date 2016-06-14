@@ -43,7 +43,7 @@ namespace FreeRadWebApi.Controllers
 
         // POST: api/Users
         [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> PostUser([FromBody] User user)
+        public async Task<IHttpActionResult> PostUser([FromBody]User user)
         {
             if (!ModelState.IsValid)
             {
@@ -58,7 +58,7 @@ namespace FreeRadWebApi.Controllers
 
         // PUT: api/Users/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutUser(int id, [FromBody] User user)
+        public async Task<IHttpActionResult> PutUser(int id, [FromBody]User user)
         {
             if (!ModelState.IsValid)
             {
@@ -67,9 +67,9 @@ namespace FreeRadWebApi.Controllers
 
             if (id != user.Id)
             {
-                var message = new HttpResponseMessage(HttpStatusCode.NotFound)
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
                 {
-                    Content = new StringContent($"Не могу найти пользователя с Id:{id}!")
+                    Content = new StringContent("Проверьте параметры запроса! Поля не совпадают!")
                 };
 
                 throw new HttpResponseException(message);
@@ -101,7 +101,7 @@ namespace FreeRadWebApi.Controllers
 
         // DELETE: api/Users/5
         [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> DeleteUser(int id, [FromBody] User deleteUser)
+        public async Task<IHttpActionResult> DeleteUser(int id, [FromBody]User deleteUser)
         {
             User user = _repository.FindUser(id);
             if (user == null)
@@ -118,7 +118,7 @@ namespace FreeRadWebApi.Controllers
             {
                 var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
                 {
-                    Content = new StringContent($"Не могу удалить пользователя. Поля не совпадают!")
+                    Content = new StringContent("Не могу удалить пользователя. Проверьте тело запроса!")
                 };
                 
                 throw new HttpResponseException(message);                

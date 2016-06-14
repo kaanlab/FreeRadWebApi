@@ -25,16 +25,22 @@ namespace FreeRadWebApi.Controllers
         public async Task<IHttpActionResult> GetGroup(int id)
         {
             Group group = await _repository.FindGroupAsync(id);
+
             if (group == null)
             {
-                return NotFound();
+                var message = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent($"Не могу найти группу с Id:{id}!")
+                };
+
+                throw new HttpResponseException(message);
             }
 
             return Ok(group);
         }
 
         [ResponseType(typeof(Group))]
-        public async Task<IHttpActionResult> PostGroup(Group group)
+        public async Task<IHttpActionResult> PostGroup([FromBody]Group group)
         {
             if (!ModelState.IsValid)
             {
@@ -48,7 +54,7 @@ namespace FreeRadWebApi.Controllers
         }
 
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutGroup(int id, Group group)
+        public async Task<IHttpActionResult> PutGroup(int id, [FromBody]Group group)
         {
             if (!ModelState.IsValid)
             {
@@ -57,12 +63,22 @@ namespace FreeRadWebApi.Controllers
 
             if (id != group.Id)
             {
-                return BadRequest();
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent("Проверьте параметры запроса! Поля не совпадают!")
+                };
+
+                throw new HttpResponseException(message);
             }
 
             if (!GroupExists(id))
             {
-                return NotFound();
+                var message = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent($"Не могу найти пользователя с Id:{id}!")
+                };
+                //return NotFound();
+                throw new HttpResponseException(message);
             }
 
             try
@@ -80,12 +96,27 @@ namespace FreeRadWebApi.Controllers
         }
 
         [ResponseType(typeof(Group))]
-        public async Task<IHttpActionResult> DeleteGroup(int id)
+        public async Task<IHttpActionResult> DeleteGroup(int id, [FromBody]Group deleteGroup)
         {
             Group group = _repository.FindGroup(id);
             if (group == null)
             {
-                return NotFound();
+                var message = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent($"Не могу найти пользователя с Id:{id}!")
+                };
+
+                throw new HttpResponseException(message);
+            }
+
+            if (group.GroupName != deleteGroup.GroupName || group.Value != deleteGroup.Value)
+            {
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent("Не могу удалить группу. Проверьте тело запроса!")
+                };
+
+                throw new HttpResponseException(message);
             }
 
             try
@@ -93,9 +124,14 @@ namespace FreeRadWebApi.Controllers
                 _repository.DeleteGroup(group);
                 await _repository.SaveAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(HttpStatusCode.BadRequest);
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent(ex.ToString())
+                };
+
+                throw new HttpResponseException(message);
             }
 
             return Ok(group);

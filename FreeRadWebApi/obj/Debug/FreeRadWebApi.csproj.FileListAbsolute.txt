@@ -155,3 +155,6 @@ C:\Users\Maria\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\obj\Debug\FreeRadWeb
 C:\Users\Maria\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\bin\System.Web.Cors.dll
 C:\Users\Maria\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\bin\System.Web.Http.Cors.dll
 C:\Users\Maria\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\bin\System.Web.Http.Cors.xml
+C:\Users\icer\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\bin\System.Web.Cors.dll
+C:\Users\icer\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\bin\System.Web.Http.Cors.dll
+C:\Users\icer\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\bin\System.Web.Http.Cors.xml
