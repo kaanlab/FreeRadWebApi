@@ -87,9 +87,14 @@ namespace FreeRadWebApi.Controllers
 
                 await _repository.SaveAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(HttpStatusCode.BadRequest);
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent(ex.ToString())
+                };
+
+                throw new HttpResponseException(message);
             }
 
             return StatusCode(HttpStatusCode.NoContent);

@@ -189,23 +189,23 @@ namespace FreeRadWebApi.Models
 
         public IEnumerable<UserInGroup> GetAllUsersInGroup() => _context.UserInGroups.ToList();
 
-        public void AddUserToGroup(UserInGroup newUser)
+        public void AddUserToGroup(UserInGroup newUserInGroup)
         {
-            _context.UserInGroups.Add(newUser);
+            _context.UserInGroups.Add(newUserInGroup);
         }
 
-        public UserInGroup FindUserInGroup(int? userId) => _context.UserInGroups.Find(userId);
+        public UserInGroup FindUserInGroup(int? userInGroupId) => _context.UserInGroups.Find(userInGroupId);
 
-        public Task<UserInGroup> FindUserInGroupAsync(int? userId) => _context.UserInGroups.FindAsync(userId);
+        public Task<UserInGroup> FindUserInGroupAsync(int? userInGroupId) => _context.UserInGroups.FindAsync(userInGroupId);
 
-        public void EditUserInGroup(UserInGroup user)
+        public void EditUserInGroup(UserInGroup userInGroup)
         {
             var mySqlParams = new MySqlParameter[]
                 {
-                    new MySqlParameter("@id", user.Id),
-                    new MySqlParameter("@username", user.UserName),
-                    new MySqlParameter("@groupname", user.GroupName),
-                    new MySqlParameter("@priority", user.Priority)
+                    new MySqlParameter("@id", userInGroup.Id),
+                    new MySqlParameter("@username", userInGroup.UserName),
+                    new MySqlParameter("@groupname", userInGroup.GroupName),
+                    new MySqlParameter("@priority", userInGroup.Priority)
                 };
 
             _context
@@ -213,13 +213,13 @@ namespace FreeRadWebApi.Models
                 .ExecuteSqlCommand("UPDATE radius.radusergroup SET username = @username, groupname = @groupname, priority = @priority WHERE id = @id", mySqlParams);
         }
 
-        public void DeleteUserFromGroup(UserInGroup user)
+        public void DeleteUserFromGroup(UserInGroup userInGroup)
         {
-            var mySqlParams = new MySqlParameter("@id", user.Id);
+            var mySqlParams = new MySqlParameter("@id", userInGroup.Id);
 
             _context
                 .Database
-                .ExecuteSqlCommand("DELETE FROM radius.radusergroup WHERE id = @id AND username = @username AND groupname = @groupname AND priority = @priority", mySqlParams);
+                .ExecuteSqlCommand("DELETE FROM radius.radusergroup WHERE id = @id", mySqlParams);
         }
 
         #endregion

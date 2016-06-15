@@ -27,14 +27,19 @@ namespace FreeRadWebApi.Controllers
             UserAttribute userAttr = await _repository.FindUserAttrAsync(id);
             if (userAttr == null)
             {
-                return NotFound();
+                var message = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent($"Не могу найти доп.атрибут пользователя с Id:{id}!")
+                };
+
+                throw new HttpResponseException(message);
             }
 
             return Ok(userAttr);
         }
 
         [ResponseType(typeof(UserAttribute))]
-        public async Task<IHttpActionResult> PostUserAttr(UserAttribute userAttr)
+        public async Task<IHttpActionResult> PostUserAttr([FromBody]UserAttribute userAttr)
         {
             if (!ModelState.IsValid)
             {
@@ -48,7 +53,7 @@ namespace FreeRadWebApi.Controllers
         }
 
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutUserAttr(int id, UserAttribute userAttr)
+        public async Task<IHttpActionResult> PutUserAttr(int id, [FromBody]UserAttribute userAttr)
         {
             if (!ModelState.IsValid)
             {
@@ -57,35 +62,64 @@ namespace FreeRadWebApi.Controllers
 
             if (id != userAttr.Id)
             {
-                return BadRequest();
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent("Проверьте параметры запроса! Поля не совпадают!")
+                };
+
+                throw new HttpResponseException(message);
             }
 
             if (!UserAttrExists(id))
             {
-                return NotFound();
+                var message = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent($"Не могу найти доп.атибуты пользователя с Id:{id}!")
+                };
+                //return NotFound();
+                throw new HttpResponseException(message);
             }
 
             try
             {
                 _repository.EditUserAttr(userAttr);
-
                 await _repository.SaveAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(HttpStatusCode.BadRequest);
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent(ex.ToString())
+                };
+
+                throw new HttpResponseException(message);
             }
 
             return StatusCode(HttpStatusCode.NoContent);
         }
 
         [ResponseType(typeof(UserAttribute))]
-        public async Task<IHttpActionResult> DeleteUserAttr(int id)
+        public async Task<IHttpActionResult> DeleteUserAttr(int id, [FromBody]UserAttribute deleteUserAttr)
         {
             UserAttribute userAttr = _repository.FindUserAttr(id);
             if (userAttr == null)
             {
-                return NotFound();
+                var message = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent($"Не могу найти доп.атибуты пользователя с Id:{id}!")
+                };
+
+                throw new HttpResponseException(message);
+            }
+
+            if (userAttr.UserName != deleteUserAttr.UserName || userAttr.Value != deleteUserAttr.Value)
+            {
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent("Не могу удалить доп.атрибут. Проверьте тело запроса!")
+                };
+
+                throw new HttpResponseException(message);
             }
 
             try
@@ -93,9 +127,14 @@ namespace FreeRadWebApi.Controllers
                 _repository.DeleteUserAttr(userAttr);
                 await _repository.SaveAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(HttpStatusCode.BadRequest);
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent(ex.ToString())
+                };
+
+                throw new HttpResponseException(message);
             }
 
             return Ok(userAttr);

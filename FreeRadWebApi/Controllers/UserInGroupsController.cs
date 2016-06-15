@@ -27,14 +27,19 @@ namespace FreeRadWebApi.Controllers
             UserInGroup userInGroup = await _repository.FindUserInGroupAsync(id);
             if (userInGroup == null)
             {
-                return NotFound();
+                var message = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent($"Не могу найти пользователя в группе с Id:{id}!")
+                };
+
+                throw new HttpResponseException(message);
             }
 
             return Ok(userInGroup);
         }
 
         [ResponseType(typeof(UserInGroup))]
-        public async Task<IHttpActionResult> PostUserInGroup(UserInGroup userInGroup)
+        public async Task<IHttpActionResult> PostUserInGroup([FromBody]UserInGroup userInGroup)
         {
             if (!ModelState.IsValid)
             {
@@ -48,7 +53,7 @@ namespace FreeRadWebApi.Controllers
         }
 
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutGroup(int id, UserInGroup userInGroup)
+        public async Task<IHttpActionResult> PutUserInGroup(int id, [FromBody]UserInGroup userInGroup)
         {
             if (!ModelState.IsValid)
             {
@@ -57,12 +62,22 @@ namespace FreeRadWebApi.Controllers
 
             if (id != userInGroup.Id)
             {
-                return BadRequest();
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent("Проверьте параметры запроса! Поля не совпадают!")
+                };
+
+                throw new HttpResponseException(message);
             }
 
             if (!UserInGroupExists(id))
             {
-                return NotFound();
+                var message = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent($"Не могу найти пользователя в группе с Id:{id}!")
+                };
+                //return NotFound();
+                throw new HttpResponseException(message);
             }
 
             try
@@ -71,21 +86,41 @@ namespace FreeRadWebApi.Controllers
 
                 await _repository.SaveAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(HttpStatusCode.BadRequest);
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent(ex.ToString())
+                };
+
+                throw new HttpResponseException(message);
             }
 
             return StatusCode(HttpStatusCode.NoContent);
         }
 
         [ResponseType(typeof(UserInGroup))]
-        public async Task<IHttpActionResult> DeleteGroup(int id)
+        public async Task<IHttpActionResult> DeleteUserInGroup(int id, [FromBody]UserInGroup deleteUserInGroup)
         {
             UserInGroup userInGroup = _repository.FindUserInGroup(id);
             if (userInGroup == null)
             {
-                return NotFound();
+                var message = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent($"Не могу найти пользователя в группе с Id:{id}!")
+                };
+
+                throw new HttpResponseException(message);
+            }
+
+            if (userInGroup.GroupName != deleteUserInGroup.GroupName || userInGroup.UserName != deleteUserInGroup.UserName)
+            {
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent("Не могу удалить пользователя из группы. Проверьте тело запроса!")
+                };
+
+                throw new HttpResponseException(message);
             }
 
             try
@@ -93,9 +128,14 @@ namespace FreeRadWebApi.Controllers
                 _repository.DeleteUserFromGroup(userInGroup);
                 await _repository.SaveAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(HttpStatusCode.BadRequest);
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent(ex.ToString())
+                };
+
+                throw new HttpResponseException(message);
             }
 
             return Ok(userInGroup);
