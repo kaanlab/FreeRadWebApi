@@ -27,14 +27,19 @@ namespace FreeRadWebApi.Controllers
             GroupAttribute groupAttr = await _repository.FindGroupAttrAsync(id);
             if (groupAttr == null)
             {
-                return NotFound();
+                var message = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent($"Не могу найти доп.атрибут группы с Id:{id}!")
+                };
+
+                throw new HttpResponseException(message);
             }
 
             return Ok(groupAttr);
         }
 
         [ResponseType(typeof(GroupAttribute))]
-        public async Task<IHttpActionResult> PostGroupAttr(GroupAttribute groupAttr)
+        public async Task<IHttpActionResult> PostGroupAttr([FromBody]GroupAttribute groupAttr)
         {
             if (!ModelState.IsValid)
             {
@@ -48,7 +53,7 @@ namespace FreeRadWebApi.Controllers
         }
 
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutGroupAttr(int id, GroupAttribute groupAttr)
+        public async Task<IHttpActionResult> PutGroupAttr(int id, [FromBody]GroupAttribute groupAttr)
         {
             if (!ModelState.IsValid)
             {
@@ -57,35 +62,64 @@ namespace FreeRadWebApi.Controllers
 
             if (id != groupAttr.Id)
             {
-                return BadRequest();
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent("Проверьте параметры запроса! Поля не совпадают!")
+                };
+
+                throw new HttpResponseException(message);
             }
 
             if (!GroupAttrExists(id))
             {
-                return NotFound();
+                var message = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent($"Не могу найти доп.атибут группы с Id:{id}!")
+                };
+                //return NotFound();
+                throw new HttpResponseException(message);
             }
 
             try
             {
                 _repository.EditGroupAttr(groupAttr);
-
                 await _repository.SaveAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(HttpStatusCode.BadRequest);
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent(ex.ToString())
+                };
+
+                throw new HttpResponseException(message);
             }
 
             return StatusCode(HttpStatusCode.NoContent);
         }
 
         [ResponseType(typeof(GroupAttribute))]
-        public async Task<IHttpActionResult> DeleteGroupAttr(int id)
+        public async Task<IHttpActionResult> DeleteGroupAttr(int id, [FromBody]GroupAttribute deleteGroupAttr)
         {
             GroupAttribute groupAttr = _repository.FindGroupAttr(id);
             if (groupAttr == null)
             {
-                return NotFound();
+                var message = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent($"Не могу найти доп.атибуты группы с Id:{id}!")
+                };
+
+                throw new HttpResponseException(message);
+            }
+
+            if (groupAttr.GroupName != deleteGroupAttr.GroupName || groupAttr.Value != deleteGroupAttr.Value)
+            {
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent("Не могу удалить доп.атрибут. Проверьте тело запроса!")
+                };
+
+                throw new HttpResponseException(message);
             }
 
             try
@@ -93,9 +127,14 @@ namespace FreeRadWebApi.Controllers
                 _repository.DeleteGroupAttr(groupAttr);
                 await _repository.SaveAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(HttpStatusCode.BadRequest);
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent(ex.ToString())
+                };
+
+                throw new HttpResponseException(message);
             }
 
             return Ok(groupAttr);
