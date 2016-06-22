@@ -44,8 +44,9 @@ namespace FreeRadWebApi.Models
         IEnumerable<Nas> GetAllNas();
         void AddNas(Nas newNas);
         Nas FindNas(int? nasId);
+        Task<Nas> FindNasAsync(int? nasId);
         void EditNas(Nas nas);
-        void DeleteNas(int nasId);
+        void DeleteNas(Nas nas);
 
         IEnumerable<AccessLog> GetAllLogsOderByIdDes();
         AccessLog FindLog(int? logId);

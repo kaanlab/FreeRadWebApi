@@ -174,15 +174,16 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\GroupAttributesController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
+    <Compile Include="Controllers\NasesController.cs" />
     <Compile Include="Controllers\UserAttributesController.cs" />
     <Compile Include="Controllers\UserInGroupsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201606020833223_CreateDatabase.cs" />
-    <Compile Include="Migrations\201606020833223_CreateDatabase.Designer.cs">
-      <DependentUpon>201606020833223_CreateDatabase.cs</DependentUpon>
+    <Compile Include="Migrations\201606220852261_CreateDatabase.cs" />
+    <Compile Include="Migrations\201606220852261_CreateDatabase.Designer.cs">
+      <DependentUpon>201606220852261_CreateDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccessLog.cs" />
@@ -211,8 +212,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606020833223_CreateDatabase.resx">
-      <DependentUpon>201606020833223_CreateDatabase.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201606220852261_CreateDatabase.resx">
+      <DependentUpon>201606220852261_CreateDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

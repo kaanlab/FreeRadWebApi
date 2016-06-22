@@ -13,15 +13,11 @@ namespace FreeRadWebApi.Models
         [InjectionConstructor]
         public MySqlDbContext()
             : base("MySqlServer")
-        {
-
-        }
+        { }
 
         public MySqlDbContext(DbConnection existingConnection, bool contextOwnsConnection)
             : base(existingConnection, contextOwnsConnection)
-        {
-
-        }
+        { }
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserAttribute> UserAttributes { get; set; }
@@ -57,6 +53,7 @@ namespace FreeRadWebApi.Models
             modelBuilder.Entity<User>().Property(u => u.Attribute).IsRequired().HasMaxLength(64).IsUnicode(false);
             modelBuilder.Entity<User>().Property(u => u.Op).IsRequired().HasMaxLength(2).IsUnicode(false);
             modelBuilder.Entity<User>().Property(u => u.Value).IsRequired().HasMaxLength(253).IsUnicode(false);
+            modelBuilder.Entity<User>().Property(u => u.Description).HasMaxLength(200).IsUnicode(false);
 
             // UserAttribute data annotations
             modelBuilder.Entity<UserAttribute>().ToTable("radreply");
@@ -75,6 +72,7 @@ namespace FreeRadWebApi.Models
             modelBuilder.Entity<Group>().Property(g => g.Attribute).IsRequired().HasMaxLength(64).IsUnicode(false);
             modelBuilder.Entity<Group>().Property(g => g.Op).IsRequired().HasMaxLength(2).IsUnicode(false);
             modelBuilder.Entity<Group>().Property(g => g.Value).IsRequired().HasMaxLength(253).IsUnicode(false);
+            modelBuilder.Entity<Group>().Property(g => g.Description).HasMaxLength(200).IsUnicode(false);
 
             // GroupAttribute data annotations
             modelBuilder.Entity<GroupAttribute>().ToTable("radgroupreply");

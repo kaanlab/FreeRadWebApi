@@ -117,8 +117,6 @@ C:\Users\icer\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\bin\System.Web.Razor.
 C:\Users\icer\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\obj\Debug\FreeRadWebApi.csprojResolveAssemblyReference.cache
 C:\Users\icer\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\obj\Debug\FreeRadWebApi.dll
 C:\Users\icer\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\obj\Debug\FreeRadWebApi.pdb
-C:\Users\icer\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\obj\Debug\FreeRadWebApi.Migrations.CreateDatabase.resources
-C:\Users\icer\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\obj\Debug\FreeRadWebApi.csproj.GenerateResource.Cache
 C:\Users\icer\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\bin\Microsoft.Web.Infrastructure.dll
 C:\Users\icer\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\bin\System.Web.Helpers.dll
 C:\Users\icer\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\bin\System.Web.WebPages.Deployment.dll
@@ -158,3 +156,5 @@ C:\Users\Maria\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\bin\System.Web.Http.
 C:\Users\icer\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\bin\System.Web.Cors.dll
 C:\Users\icer\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\bin\System.Web.Http.Cors.dll
 C:\Users\icer\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\bin\System.Web.Http.Cors.xml
+C:\Users\icer\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\obj\Debug\FreeRadWebApi.Migrations.CreateDatabase.resources
+C:\Users\icer\Documents\GitHub\FreeRadWebApi\FreeRadWebApi\obj\Debug\FreeRadWebApi.csproj.GenerateResource.Cache

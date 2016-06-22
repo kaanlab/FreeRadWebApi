@@ -13,7 +13,7 @@ namespace FreeRadWebApi.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201606020833223_CreateDatabase"; }
+            get { return "201606220852261_CreateDatabase"; }
         }
         
         string IMigrationMetadata.Source

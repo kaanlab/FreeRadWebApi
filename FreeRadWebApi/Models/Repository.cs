@@ -40,12 +40,13 @@ namespace FreeRadWebApi.Models
                     new MySqlParameter("@username", user.UserName),
                     new MySqlParameter("@attribute", user.Attribute),
                     new MySqlParameter("@op", user.Op),
-                    new MySqlParameter("@value", user.Value)
+                    new MySqlParameter("@value", user.Value),
+                    new MySqlParameter("@description", user.Description)
                };
 
             _context
                 .Database
-                .ExecuteSqlCommand("UPDATE radius.radcheck SET username = @username, attribute = @attribute, op = @op, value = @value WHERE id = @id", mySqlParams);
+                .ExecuteSqlCommand("UPDATE radius.radcheck SET username = @username, attribute = @attribute, op = @op, value = @value, description = @description WHERE id = @id", mySqlParams);
         }
 
         public void DeleteUser(User user)
@@ -122,12 +123,13 @@ namespace FreeRadWebApi.Models
                         new MySqlParameter("@groupname", group.GroupName),
                         new MySqlParameter("@attribute", group.Attribute),
                         new MySqlParameter("@op", group.Op),
-                        new MySqlParameter("@value", group.Value)
+                        new MySqlParameter("@value", group.Value),
+                        new MySqlParameter("@description", group.Description)
                     };
 
             _context
                 .Database
-                .ExecuteSqlCommand("UPDATE radius.radgroupcheck SET groupname = @groupname, attribute = @attribute, op = @op, value = @value WHERE id = @id", mySqlParams);
+                .ExecuteSqlCommand("UPDATE radius.radgroupcheck SET groupname = @groupname, attribute = @attribute, op = @op, value = @value, description = @description WHERE id = @id", mySqlParams);
         }
 
         public void DeleteGroup(Group group)
@@ -236,6 +238,8 @@ namespace FreeRadWebApi.Models
 
         public Nas FindNas(int? nasId) => _context.Nases.Find(nasId);
 
+        public Task<Nas> FindNasAsync(int? nasId) => _context.Nases.FindAsync(nasId);
+
         public void EditNas(Nas nas)
         {
             var mySqlParams = new MySqlParameter[]
@@ -255,11 +259,13 @@ namespace FreeRadWebApi.Models
                 .ExecuteSqlCommand("UPDATE radius.nas SET nasname = @nasname, shortname = @shortname, type = @type, ports = @ports, secret = @secret, community = @community, description = @description WHERE id = @id", mySqlParams);
         }
 
-        public void DeleteNas(int nasId)
+        public void DeleteNas(Nas nas)
         {
+            var mySqlParams = new MySqlParameter("@id", nas.Id);
+
             _context
                 .Database
-                .ExecuteSqlCommand("DELETE FROM radius.nas WHERE id = @id", new MySqlParameter("@id", nasId));
+                .ExecuteSqlCommand("DELETE FROM radius.nas WHERE id = @id", mySqlParams);
         }
 
         #endregion

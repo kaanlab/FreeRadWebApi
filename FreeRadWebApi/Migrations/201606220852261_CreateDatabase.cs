@@ -55,7 +55,7 @@ namespace FreeRadWebApi.Migrations
                         UserName = c.String(nullable: false, maxLength: 64, unicode: false),
                         Pass = c.String(nullable: false, maxLength: 64, unicode: false),
                         Reply = c.String(nullable: false, maxLength: 32, unicode: false),
-                        AuthDate = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"),
+                        AuthDate = c.DateTime(nullable: false, precision: 0),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -81,6 +81,7 @@ namespace FreeRadWebApi.Migrations
                         Attribute = c.String(nullable: false, maxLength: 64, unicode: false),
                         Op = c.String(nullable: false, maxLength: 2, unicode: false),
                         Value = c.String(nullable: false, maxLength: 253, unicode: false),
+                        Description = c.String(maxLength: 200, unicode: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.GroupName, name: "groupname");
@@ -135,6 +136,7 @@ namespace FreeRadWebApi.Migrations
                         Attribute = c.String(nullable: false, maxLength: 64, unicode: false),
                         Op = c.String(nullable: false, maxLength: 2, unicode: false),
                         Value = c.String(nullable: false, maxLength: 253, unicode: false),
+                        Description = c.String(maxLength: 200, unicode: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.UserName, name: "username");
@@ -325,17 +327,20 @@ namespace FreeRadWebApi.Migrations
                         Attribute = p.String(maxLength: 64, unicode: false),
                         Op = p.String(maxLength: 2, unicode: false),
                         Value = p.String(maxLength: 253, unicode: false),
+                        Description = p.String(maxLength: 200, unicode: false),
                     },
                 body:
                     @"SET SESSION sql_mode='ANSI';INSERT INTO `radgroupcheck`(
                       `GroupName`, 
                       `Attribute`, 
                       `Op`, 
-                      `Value`) VALUES (
+                      `Value`, 
+                      `Description`) VALUES (
                       @GroupName, 
                       @Attribute, 
                       @Op, 
-                      @Value);
+                      @Value, 
+                      @Description);
                       SELECT
                       `Id`
                       FROM `radgroupcheck`
@@ -351,9 +356,10 @@ namespace FreeRadWebApi.Migrations
                         Attribute = p.String(maxLength: 64, unicode: false),
                         Op = p.String(maxLength: 2, unicode: false),
                         Value = p.String(maxLength: 253, unicode: false),
+                        Description = p.String(maxLength: 200, unicode: false),
                     },
                 body:
-                    @"UPDATE `radgroupcheck` SET `GroupName`=@GroupName, `Attribute`=@Attribute, `Op`=@Op, `Value`=@Value WHERE `Id` = @Id;"
+                    @"UPDATE `radgroupcheck` SET `GroupName`=@GroupName, `Attribute`=@Attribute, `Op`=@Op, `Value`=@Value, `Description`=@Description WHERE `Id` = @Id;"
             );
             
             CreateStoredProcedure(
@@ -529,17 +535,20 @@ namespace FreeRadWebApi.Migrations
                         Attribute = p.String(maxLength: 64, unicode: false),
                         Op = p.String(maxLength: 2, unicode: false),
                         Value = p.String(maxLength: 253, unicode: false),
+                        Description = p.String(maxLength: 200, unicode: false),
                     },
                 body:
                     @"SET SESSION sql_mode='ANSI';INSERT INTO `radcheck`(
                       `UserName`, 
                       `Attribute`, 
                       `Op`, 
-                      `Value`) VALUES (
+                      `Value`, 
+                      `Description`) VALUES (
                       @UserName, 
                       @Attribute, 
                       @Op, 
-                      @Value);
+                      @Value, 
+                      @Description);
                       SELECT
                       `Id`
                       FROM `radcheck`
@@ -555,9 +564,10 @@ namespace FreeRadWebApi.Migrations
                         Attribute = p.String(maxLength: 64, unicode: false),
                         Op = p.String(maxLength: 2, unicode: false),
                         Value = p.String(maxLength: 253, unicode: false),
+                        Description = p.String(maxLength: 200, unicode: false),
                     },
                 body:
-                    @"UPDATE `radcheck` SET `UserName`=@UserName, `Attribute`=@Attribute, `Op`=@Op, `Value`=@Value WHERE `Id` = @Id;"
+                    @"UPDATE `radcheck` SET `UserName`=@UserName, `Attribute`=@Attribute, `Op`=@Op, `Value`=@Value, `Description`=@Description WHERE `Id` = @Id;"
             );
             
             CreateStoredProcedure(
