@@ -99,6 +99,7 @@ namespace FreeRadWebApi.Models
             modelBuilder.Entity<Nas>().Property(n => n.ShortName).HasMaxLength(32).IsUnicode(false);
             modelBuilder.Entity<Nas>().Property(n => n.Type).HasMaxLength(30).IsUnicode(false);
             modelBuilder.Entity<Nas>().Property(n => n.Secret).IsRequired().HasMaxLength(60).IsUnicode(false);
+            modelBuilder.Entity<Nas>().Property(n => n.Server).HasMaxLength(64).IsUnicode(false);
             modelBuilder.Entity<Nas>().Property(n => n.Community).HasMaxLength(50).IsUnicode(false);
             modelBuilder.Entity<Nas>().Property(n => n.Description).HasMaxLength(200).IsUnicode(false);
 

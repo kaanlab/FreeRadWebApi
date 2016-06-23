@@ -181,9 +181,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201606220852261_CreateDatabase.cs" />
-    <Compile Include="Migrations\201606220852261_CreateDatabase.Designer.cs">
-      <DependentUpon>201606220852261_CreateDatabase.cs</DependentUpon>
+    <Compile Include="Migrations\201606231435201_CreateDatabase.cs" />
+    <Compile Include="Migrations\201606231435201_CreateDatabase.Designer.cs">
+      <DependentUpon>201606231435201_CreateDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccessLog.cs" />
@@ -212,8 +212,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606220852261_CreateDatabase.resx">
-      <DependentUpon>201606220852261_CreateDatabase.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201606231435201_CreateDatabase.resx">
+      <DependentUpon>201606231435201_CreateDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

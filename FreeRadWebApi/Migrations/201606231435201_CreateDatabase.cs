@@ -96,6 +96,7 @@ namespace FreeRadWebApi.Migrations
                         Type = c.String(maxLength: 30, unicode: false),
                         Ports = c.Int(),
                         Secret = c.String(nullable: false, maxLength: 60, unicode: false),
+                        Server = c.String(maxLength: 64, unicode: false),
                         Community = c.String(maxLength: 50, unicode: false),
                         Description = c.String(maxLength: 200, unicode: false),
                     })
@@ -381,6 +382,7 @@ namespace FreeRadWebApi.Migrations
                         Type = p.String(maxLength: 30, unicode: false),
                         Ports = p.Int(),
                         Secret = p.String(maxLength: 60, unicode: false),
+                        Server = p.String(maxLength: 64, unicode: false),
                         Community = p.String(maxLength: 50, unicode: false),
                         Description = p.String(maxLength: 200, unicode: false),
                     },
@@ -391,6 +393,7 @@ namespace FreeRadWebApi.Migrations
                       `Type`, 
                       `Ports`, 
                       `Secret`, 
+                      `Server`, 
                       `Community`, 
                       `Description`) VALUES (
                       @NasName, 
@@ -398,6 +401,7 @@ namespace FreeRadWebApi.Migrations
                       @Type, 
                       @Ports, 
                       @Secret, 
+                      @Server, 
                       @Community, 
                       @Description);
                       SELECT
@@ -416,11 +420,12 @@ namespace FreeRadWebApi.Migrations
                         Type = p.String(maxLength: 30, unicode: false),
                         Ports = p.Int(),
                         Secret = p.String(maxLength: 60, unicode: false),
+                        Server = p.String(maxLength: 64, unicode: false),
                         Community = p.String(maxLength: 50, unicode: false),
                         Description = p.String(maxLength: 200, unicode: false),
                     },
                 body:
-                    @"UPDATE `nas` SET `NasName`=@NasName, `ShortName`=@ShortName, `Type`=@Type, `Ports`=@Ports, `Secret`=@Secret, `Community`=@Community, `Description`=@Description WHERE `Id` = @Id;"
+                    @"UPDATE `nas` SET `NasName`=@NasName, `ShortName`=@ShortName, `Type`=@Type, `Ports`=@Ports, `Secret`=@Secret, `Server`=@Server, `Community`=@Community, `Description`=@Description WHERE `Id` = @Id;"
             );
             
             CreateStoredProcedure(

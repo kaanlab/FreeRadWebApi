@@ -250,13 +250,14 @@ namespace FreeRadWebApi.Models
                     new MySqlParameter("@type", nas.Type),
                     new MySqlParameter("@ports", nas.Ports),
                     new MySqlParameter("@secret", nas.Secret),
+                    new MySqlParameter("@server", nas.Server),
                     new MySqlParameter("@community", nas.Community),
                     new MySqlParameter("@description", nas.Description)
                 };
 
             _context
                 .Database
-                .ExecuteSqlCommand("UPDATE radius.nas SET nasname = @nasname, shortname = @shortname, type = @type, ports = @ports, secret = @secret, community = @community, description = @description WHERE id = @id", mySqlParams);
+                .ExecuteSqlCommand("UPDATE radius.nas SET nasname = @nasname, shortname = @shortname, type = @type, ports = @ports, secret = @secret, server = @server, community = @community, description = @description WHERE id = @id", mySqlParams);
         }
 
         public void DeleteNas(Nas nas)
